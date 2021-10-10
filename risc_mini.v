@@ -12,6 +12,11 @@ module risc_mini (
     wire [2:0] ExtOp;
     wire [31:0] imm;
 
+    //*内存控制对应信号
+    wire MemWr;
+    wire Memout;
+
+
     wire busB_imm;
     wire ALUBSrc;
 
@@ -39,8 +44,28 @@ module risc_mini (
         .result (result ),
         .result (result )
     );
+
+    mem u_mem(
+    	.Addr   (Result ),
+        .WrEn   (WrEn   ),
+        .Clk    (Clk    ),
+        .DataIn (busB   ),
+        .Memout (Memout )
+    );
+
+    pc_next u_pc_next(
+    	.Branch (Branch ),
+        .Zero   (Result ),
+        .imm    (imm    ),
+        .pc     (pc     ),
+        .pc_out (pc_out )
+    );
+    
+    
     
     assign A = busA;
     assign busB_imm = (ALUBSrc == 1) ? imm : busB;
     assign B = busB_imm;
+
+
 endmodule
