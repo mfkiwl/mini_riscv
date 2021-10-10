@@ -1,8 +1,8 @@
 //*I, S, B, U, J型指令均具有立即数，但是对输入立即数的操作不同
 //*采用拼接器得到所需要的立即数
 module imm_joint (
-    input [31:0] instr,
-    input [2:0] extop,
+    input [31:0] Instr,
+    input [2:0] ExtOp,
     output reg [31:0] imm
 );
     wire [31:0] immI;
@@ -11,14 +11,14 @@ module imm_joint (
     wire [31:0] immU;
     wire [31:0] immJ;
 
-    assign immI = {{20{instr[31]}}, instr[31:20]};
-    assign immU = {instr[31:12], 12'b0};
-    assign immS = {{20{instr[31]}}, instr[31:25], instr[11:7]};
-    assign immB = {{20{instr[31]}}, instr[7], instr[30:25], instr[11:8], 1'b0};
-    assign immJ = {{12{instr[31]}}, instr[19:12], instr[20], instr[30:21], 1'b0};
+    assign immI = {{20{Instr[31]}}, Instr[31:20]};
+    assign immU = {Instr[31:12], 12'b0};
+    assign immS = {{20{Instr[31]}}, Instr[31:25], Instr[11:7]};
+    assign immB = {{20{Instr[31]}}, Instr[7], Instr[30:25], Instr[11:8], 1'b0};
+    assign immJ = {{12{Instr[31]}}, Instr[19:12], Instr[20], Instr[30:21], 1'b0};
 
     always @(*) begin
-        case (extop)
+        case (ExtOp)
             3'b000 : 
                 begin
                     imm = immI;
